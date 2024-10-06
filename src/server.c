@@ -26,7 +26,6 @@ void	ft_handler(int signal)
 		bit = 0;
 		i = 0;
 	}
-	write(1, "\n", 1);
 }
 
 int main(int argc, char **argv)
@@ -44,8 +43,8 @@ int main(int argc, char **argv)
 	tmp = ft_itoa(pid);
 	ft_putstr(tmp);
 	free(tmp);
-	write(1, "waiting  for message\n", 21);
-	while (argc == 1)
+	write(1, " waiting  for message\n", 22);
+	while (1)
 	{
 		signal(SIGUSR1, ft_handler);
 		signal(SIGUSR2, ft_handler);

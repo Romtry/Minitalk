@@ -10,15 +10,15 @@
 #                                                                              #
 # **************************************************************************** #
 
-CLIENT=		client
-SERVER=		server
+SRC_C= 		src/client.c
 
-SRC_C= 		src/client.c			\
-SRCS_S=		src/server.c			\
-SRC_UTILS=	src/utils/mini_utils.c	\
+SRCS_S=		src/server.c
 
-OFILESSRV= 	${SRCS_S.c=.o} ${SRC_UTILS:.c=.o}
-OFILESC= 	${SRC_C.c=.o} ${SRC_UTILS:.c=.o}
+SRC_UTILS=	src/utils/mini_utils.c
+
+OFILESSRV= 	${SRCS_S:.c=.o} ${SRC_UTILS:.c=.o}
+
+OFILESC= 	${SRC_C:.c=.o} ${SRC_UTILS:.c=.o}
 
 CC= 	cc
 CFLAGS= -Wall -Wextra -Werror -fsanitize=address -g3 -I includes
@@ -43,27 +43,21 @@ NBR_COMPILER = ${shell expr 100 \* ${FICH_COUNT} / ${NBR_TOT_FICHIER}}
 BAR =  ${shell expr 23 \* ${FICH_COUNT} / ${NBR_TOT_FICHIER}}
 REST = ${shell expr 23 - ${BAR}}
 
-all:		${SERVER} ${CLIENT}
+all:		server client
 
-${SERVER}:	${OFILESSRV}
-			@${CC} ${CFLAGS} ${OFILESSRV} -o ${SERVER}
+server:		${OFILESSRV}
+			@${CC} ${CFLAGS} ${OFILESSRV} -o server
 			@echo "\n\n${GREEN} [✓] - ${_GREEN}server${GREEN} Successfully Compiled!${RESET}"
 
-${CLIENT}:	${OFILESC}
-			@${CC} ${CFLAGS} ${OFILESC} -o ${CLIENT}
+client:		${OFILESC}
+			@${CC} ${CFLAGS} ${OFILESC} -o client
 			@echo "\n\n${GREEN} [✓] - ${_GREEN}client${GREEN} Successfully Compiled!${RESET}"
 
 %.o:%.c
-	@${eval FICH_COUNT = ${shell expr ${FICH_COUNT} + 1}}
-	@${CC} ${CFLAGS} -c -I . $< -o $@
-	@file_name=$(notdir $<) && \
-	echo " ${GRAS}${RED}-> COMPILING${RESET}${GRAS}${GREEN}${RESET}" && \
-	printf " ${RED}${GRAS}[${GREEN}%-.${BAR}s${DARK_RED}%-.${REST}s${RED}] [%d/%d (%d%%)] ${GREEN}%s  ✓                         ${DEF_COLOR}" "-----------------------" "-----------------------" ${FICH_COUNT} ${NBR_TOT_FICHIER} ${NBR_COMPILER} $${file_name} && \
-	echo "${UP}${UP}${UP}" && \
-	echo ""
+		@${CC} ${CFLAGS} -c $? -o $@
 
 clean:
-	@rm -rf *.o
+	@rm -rf ${OFILESC} ${OFILESSRV}
 	@echo "${ORANGE}${GRAS}\tNETTOYAGE${RESET}"
 	@echo "${RED}${ITALIQUE} -files successfully removed${RESET}"
 
