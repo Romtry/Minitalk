@@ -23,12 +23,9 @@ void	convert(int signal)
 		i |= (0x01 << bit);
 	bit++;
 	if (bit == 8)
-	{ 
+	{
 		if (index == 1025)
-		{
-			write(1, "error of signal\n", 16);
 			exit (1);
-		}
 		save[index++] = i;
 		if (i == '\0')
 		{

@@ -13,41 +13,6 @@
 #include "minitalk.h"
 
 // 🗿
-static int	atoirep(const char *nptr, int i)
-{
-	int	rep;
-
-	rep = 0;
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		rep = (rep * 10) + (nptr[i] - 48);
-		i++;
-	}
-	return (rep);
-}
-
-int	ft_atoi(const char *nptr)
-{
-	int	i;
-	int	s;
-
-	s = 1;
-	i = 0;
-	while (nptr[i] == ' ' || (nptr[i] >= '\t' && nptr[i] <= '\r'))
-		i++;
-	if (nptr[i] == '-')
-	{
-		s = -1;
-		i++;
-	}
-	else if (nptr[i] == '+')
-		i++;
-	if (nptr[i] < '0' || nptr[i] > '9')
-		return (0);
-	else
-		return (atoirep(nptr, i) * s);
-}
-
 void	ft_putstr(char *s)
 {
 	int	i;
@@ -63,42 +28,47 @@ void	ft_putstr(char *s)
 	}
 }
 
-static int	ft_len(int nbr)
+int	number_size(long int n)
 {
-	int len;
+	int	size;
 
-	len = 0;
-	len = (nbr <= 0 ? 1 : 0);
-	while (nbr != 0)
+	if (n < 0)
+		n *= -1;
+	size = 1;
+	while (n > 10)
 	{
-		nbr = nbr / 10;
-		len++;
+		n /= 10;
+		size++;
 	}
-	return (len);
+	return (size);
 }
 
-char		*ft_itoa(int n)
+void	recursive_itoa(long n, int index, char *dest)
 {
-	unsigned int	nbr;
-	int				sign;
-	int				len;
-	char			*alpha;
+	dest[index] = n % 10 + '0';
+	if (index > 0)
+		recursive_itoa(n / 10, index - 1, dest);
+}
 
-	sign = (n < 0 ? 1 : 0);
-	alpha = NULL;
-	len = ft_len(n);
-	nbr = (n < 0 ? -n : n);
-	if ((alpha = malloc(sizeof(char) * len + 1)) == NULL)
+char	*ft_itoa(int n)
+{
+	int		size;
+	long	long_n;
+	char	*dest;
+
+	size = number_size(n);
+	long_n = n;
+	if (long_n < 0)
+	{
+		long_n *= -1;
+		size++;
+	}
+	dest = malloc(sizeof(char) * (size + 1));
+	if (dest == NULL)
 		return (NULL);
-	alpha[len--] = '\0';
-	while (len >= 0)
-	{
-		alpha[len] = nbr % 10 + '0';
-		nbr /= 10;
-		len--;
-	}
-	if (sign == 1)
-		alpha[0] = '-';
-	return (alpha);
+	dest[size] = 0;
+	recursive_itoa(long_n, size - 1, dest);
+	if (n < 0)
+		dest[0] = '-';
+	return (dest);
 }
-
