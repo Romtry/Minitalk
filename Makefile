@@ -47,7 +47,7 @@ all:		server client
 
 server:		${OFILESSRV}
 			@${CC} ${CFLAGS} ${OFILESSRV} -o server
-			@echo "\n\n${GREEN} [✓] - ${_GREEN}server${GREEN} Successfully Compiled!${RESET}"
+			@echo "${GREEN} [✓] - ${_GREEN}server${GREEN} Successfully Compiled!${RESET}"
 
 client:		${OFILESC}
 			@${CC} ${CFLAGS} ${OFILESC} -o client

@@ -12,23 +12,37 @@
 
 #include "minitalk.h"
 
-void	ft_handler(int signal)
+void	convert(int signal)
 {
-	static int	bit;
-	static int	i;
+	static unsigned int	bit;
+	static char			save[1025];
+	static unsigned int	i;
+	static unsigned int	index;
 
 	if (signal == SIGUSR1)
 		i |= (0x01 << bit);
 	bit++;
 	if (bit == 8)
-	{
-		write(1, &i, 1);
+	{ 
+		if (index == 1025)
+		{
+			write(1, "error of signal\n", 16);
+			exit (1);
+		}
+		save[index++] = i;
+		if (i == '\0')
+		{
+			index = 0;
+			usleep(300);
+			ft_putstr(save);
+			write(1, "\n", 1);
+		}
 		bit = 0;
 		i = 0;
 	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	int		pid;
 	char	*tmp;
@@ -44,11 +58,9 @@ int main(int argc, char **argv)
 	ft_putstr(tmp);
 	free(tmp);
 	write(1, " waiting  for message\n", 22);
+	signal(SIGUSR1, convert);
+	signal(SIGUSR2, convert);
 	while (1)
-	{
-		signal(SIGUSR1, ft_handler);
-		signal(SIGUSR2, ft_handler);
 		pause ();
-	}
 	return (0);
 }

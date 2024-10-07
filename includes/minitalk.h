@@ -18,8 +18,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-int	    ft_atoi(const char *nptr);
+int		ft_atoi(const char *nptr);
 void	ft_putstr(char *s);
-char    *ft_itoa(int n);
+char	*ft_itoa(int n);
 
 #endif

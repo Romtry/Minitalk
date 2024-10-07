@@ -12,6 +12,7 @@
 
 #include "minitalk.h"
 
+// 🗿
 static int	atoirep(const char *nptr, int i)
 {
 	int	rep;
@@ -62,38 +63,42 @@ void	ft_putstr(char *s)
 	}
 }
 
-static size_t	get_digits(int n)
+static int	ft_len(int nbr)
 {
-	size_t	i;
+	int len;
 
-	i = 1;
-	while (n /= 10)
-		i++;
-	return (i);
+	len = 0;
+	len = (nbr <= 0 ? 1 : 0);
+	while (nbr != 0)
+	{
+		nbr = nbr / 10;
+		len++;
+	}
+	return (len);
 }
 
-char    *ft_itoa(int n)
+char		*ft_itoa(int n)
 {
-	char		*str_num;
-	size_t		digits;
-	long int	num;
+	unsigned int	nbr;
+	int				sign;
+	int				len;
+	char			*alpha;
 
-	num = n;
-	digits = get_digits(n);
-	if (n < 0)
-	{
-		num *= -1;
-		digits++;
-	}
-	if (!(str_num = (char *)malloc(sizeof(char) * (digits + 1))))
+	sign = (n < 0 ? 1 : 0);
+	alpha = NULL;
+	len = ft_len(n);
+	nbr = (n < 0 ? -n : n);
+	if ((alpha = malloc(sizeof(char) * len + 1)) == NULL)
 		return (NULL);
-	*(str_num + digits) = 0;
-	while (digits--)
+	alpha[len--] = '\0';
+	while (len >= 0)
 	{
-		*(str_num + digits) = num % 10 + '0';
-		num = num / 10;
+		alpha[len] = nbr % 10 + '0';
+		nbr /= 10;
+		len--;
 	}
-	if (n < 0)
-		*(str_num + 0) = '-';
-	return (str_num);
+	if (sign == 1)
+		alpha[0] = '-';
+	return (alpha);
 }
+
