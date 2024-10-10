@@ -51,7 +51,7 @@ server:		${OFILESSRV}
 
 client:		${OFILESC}
 			@${CC} ${CFLAGS} ${OFILESC} -o client
-			@echo "\n\n${GREEN} [✓] - ${_GREEN}client${GREEN} Successfully Compiled!${RESET}"
+			@echo "\n${GREEN} [✓] - ${_GREEN}client${GREEN} Successfully Compiled!${RESET}"
 
 %.o:%.c
 		@${CC} ${CFLAGS} -c $? -o $@
@@ -62,10 +62,10 @@ clean:
 	@echo "${RED}${ITALIQUE} -files successfully removed${RESET}"
 
 fclean:	clean
-	@rm -f ${NAME}
-	@${RM} ${NAME}
+	@rm -f server client
+	@${RM} server client
 	@echo "${RED}${ITALIQUE} -${NAME} is removed${RESET}"
 
 re:	fclean all
 
-.PHONY:		all server client clean fclean re
+.PHONY:		all clean fclean re
