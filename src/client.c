@@ -87,7 +87,6 @@ int	main(int argc, char **argv)
 	if (argc == 3)
 	{
 		pid = ft_atoi(argv[1]);
-		printf("%d\n", ft_strlen(argv[2]));
 		while (argv[2][++i - 1] != '\0')
 			kill_func(pid, argv[2][i - 1]);
 		kill_func(pid, '\0');
